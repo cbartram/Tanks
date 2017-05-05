@@ -23,8 +23,8 @@ public class TankHealth : MonoBehaviour
         explosionAudio = explosionParticles.GetComponent<AudioSource>();
 
         explosionParticles.gameObject.SetActive(false);
-    }
 
+    }
 
     private void OnEnable()
     {
@@ -33,7 +33,6 @@ public class TankHealth : MonoBehaviour
 
         SetHealthUI();
     }
-    
 
     public void TakeDamage(float amount)
     {
@@ -49,6 +48,27 @@ public class TankHealth : MonoBehaviour
 			OnDeath ();
 		}
     }
+
+	void OnCollisionEnter(Collision collision)
+	{
+
+		if (collision.gameObject.name == "Heart(Clone)") {
+			Destroy (collision.gameObject);
+
+			if (currentHealth > 70f) {
+				//Back to full health
+				currentHealth = 100f;
+				SetHealthUI ();
+
+			} else {
+
+				//Add 30% health
+				currentHealth += 30f;
+				SetHealthUI ();
+			}
+		}
+
+	}
 
 
     private void SetHealthUI()

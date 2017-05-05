@@ -10,16 +10,17 @@ public class GameManager : MonoBehaviour
     public float endDelay = 3f;           
     public CameraControl cameraControl;   
     public Text messageText;              
-    public GameObject tankPrefab;         
-    public TankManager[] tanks;           
+    public GameObject tankPrefab;  
+    public TankManager[] tanks; 
+	public HealthSpawnManager healthSpawn;
+
 
 
     private int roundNumber;              
     private WaitForSeconds startWait;     
     private WaitForSeconds endWait;       
     private TankManager roundWinner;
-    private TankManager gameWinner;       
-
+    private TankManager gameWinner; 
 
     private void Start()
     {
@@ -80,6 +81,10 @@ public class GameManager : MonoBehaviour
 		// As soon as the round starts reset the tanks and make sure they can't move.
 		ResetAllTanks ();
 		DisableTankControl ();
+
+		//Reset Health & Spawn New Health
+		healthSpawn.removeAllHealth();
+		healthSpawn.Spawn ();
 
 		// Snap the camera's zoom and position to something appropriate for the reset tanks.
 		cameraControl.SetStartPositionAndSize ();
