@@ -13,6 +13,7 @@ public class GameManager : MonoBehaviour
     public GameObject tankPrefab;  
     public TankManager[] tanks; 
 	public HealthSpawnManager healthSpawn;
+	public GameObject rocketPrefab;
 
 
 
@@ -86,6 +87,9 @@ public class GameManager : MonoBehaviour
 		healthSpawn.removeAllHealth();
 		healthSpawn.Spawn ();
 
+		//TODO spawn new rocket powerup
+		Instantiate(rocketPrefab, new Vector3(0, 0, 0),  tankPrefab.transform.rotation).transform.Rotate(new Vector3(-90f, 0f, 10f));
+
 		// Snap the camera's zoom and position to something appropriate for the reset tanks.
 		cameraControl.SetStartPositionAndSize ();
 
@@ -109,7 +113,9 @@ public class GameManager : MonoBehaviour
 		// While there is not one tank left...
 		while (!OneTankLeft())
 		{
-			// ... return on the next frame.
+			if(tanks[0].getTankHealth ().collectedPowerup) { tanks [0].activatePowerup ();}
+			if(tanks[1].getTankHealth ().collectedPowerup) { tanks [1].activatePowerup ();}
+		
 			yield return null;
 		}
     }

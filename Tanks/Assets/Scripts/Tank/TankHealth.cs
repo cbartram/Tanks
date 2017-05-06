@@ -8,20 +8,22 @@ public class TankHealth : MonoBehaviour
     public Image fillImage;                      
     public Color fullHealthColor = Color.green;  
     public Color zeroHealthColor = Color.red;    
-    public GameObject explosionPrefab;
-    
+    public GameObject explosionPrefab;   
+	public GameManager tankManager;
+
+	public bool collectedPowerup = false;
     
     private AudioSource explosionAudio;          
     private ParticleSystem explosionParticles;   
     private float currentHealth;  
-    private bool dead;            
+    private bool dead; 
 
 
     private void Awake()
     {
         explosionParticles = Instantiate(explosionPrefab).GetComponent<ParticleSystem>();
         explosionAudio = explosionParticles.GetComponent<AudioSource>();
-
+	
         explosionParticles.gameObject.SetActive(false);
 
     }
@@ -40,12 +42,12 @@ public class TankHealth : MonoBehaviour
 		currentHealth -= amount;
 
 		// Change the UI elements appropriately.
-		SetHealthUI ();
+		SetHealthUI();
 
 		// If the current health is at or below zero and it has not yet been registered, call OnDeath.
 		if (currentHealth <= 0f && !dead)
 		{
-			OnDeath ();
+			OnDeath();
 		}
     }
 
@@ -67,6 +69,16 @@ public class TankHealth : MonoBehaviour
 				SetHealthUI ();
 			}
 		}
+
+
+		//Collecting a powerup
+		if (collision.gameObject.name == "RocketPowerup(Clone)") {
+
+			collectedPowerup = true;
+
+			Destroy (collision.gameObject);
+		}
+
 
 	}
 

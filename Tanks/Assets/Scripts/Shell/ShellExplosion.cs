@@ -4,7 +4,7 @@ public class ShellExplosion : MonoBehaviour
 {
     public LayerMask tankMask;
     public ParticleSystem explosionParticles;       
-    public AudioSource explosionAudio;              
+    public AudioSource explosionAudio;    
     public float maxDamage = 100f;                  
     public float explosionForce = 1000f;            
     public float maxLifeTime = 2f;                  
@@ -15,6 +15,7 @@ public class ShellExplosion : MonoBehaviour
     {
         Destroy(gameObject, maxLifeTime);
     }
+		
 
 	// Find all the tanks in an area around the shell and damage them.
     private void OnTriggerEnter(Collider other)
@@ -64,7 +65,7 @@ public class ShellExplosion : MonoBehaviour
 		// Destroy the shell.
 		Destroy (gameObject);
     }
-
+		
 	// Calculate the amount of damage a target should take based on it's position.
     private float CalculateDamage(Vector3 targetPosition)
     {
@@ -82,6 +83,11 @@ public class ShellExplosion : MonoBehaviour
 
 		// Make sure that the minimum damage is always 0.
 		damage = Mathf.Max (0f, damage);
+
+
+		Debug.Log ("Damage Done: " + damage);
+		Debug.Log ("Damage Done without boost: " + (relativeDistance * 100f)); 
+
 
 		return damage;
     }

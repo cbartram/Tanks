@@ -5,7 +5,7 @@ using UnityEngine;
 public class TankManager
 {
     public Color playerColor;            
-    public Transform spawnPoint;         
+    public Transform spawnPoint; 
     [HideInInspector] public int playerNumber;             
     [HideInInspector] public string coloredPlayerText;
     [HideInInspector] public GameObject instance;          
@@ -15,12 +15,17 @@ public class TankManager
     private TankMovement movement;       
     private TankShooting shooting;
     private GameObject canvasGameObject;
+	private ShellExplosion explosion;
+	private TankHealth health;
 
 
     public void Setup()
     {
         movement = instance.GetComponent<TankMovement>();
         shooting = instance.GetComponent<TankShooting>();
+		explosion = instance.GetComponent<ShellExplosion>();
+		health = instance.GetComponent<TankHealth> ();
+
         canvasGameObject = instance.GetComponentInChildren<Canvas>().gameObject;
 
         movement.playerNumber = playerNumber;
@@ -35,6 +40,23 @@ public class TankManager
             renderers[i].material.color = playerColor;
         }
     }
+
+
+	public ShellExplosion getShellExplosion()
+	{
+		return explosion;
+	}
+
+	public TankHealth getTankHealth() 
+	{
+		return health;
+	}
+
+	public void activatePowerup() 
+	{
+		//getShellExplosion ().maxDamage = 200f;
+		Debug.Log ("Max Damage Increased: ");
+	}
 
 
     public void DisableControl()

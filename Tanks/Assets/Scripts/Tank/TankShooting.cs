@@ -4,16 +4,16 @@ using UnityEngine.UI;
 public class TankShooting : MonoBehaviour
 {
     public int playerNumber = 1;       
-    public Rigidbody shell;            
+    public Rigidbody shell; 
     public Transform fireTransform;    
     public Slider aimSlider;           
     public AudioSource shootingAudio;  
     public AudioClip chargingClip;     
-    public AudioClip fireClip;         
+    public AudioClip fireClip;   
+
     public float minLaunchForce = 15f; 
     public float maxLaunchForce = 30f; 
     public float maxChargeTime = 0.75f;
-
     
     private string fireButton;         
     private float currentLaunchForce;  
@@ -82,11 +82,10 @@ public class TankShooting : MonoBehaviour
 		fired = true;
 
 		// Create an instance of the shell and store a reference to it's rigidbody.
-		Rigidbody shellInstance =
-			Instantiate (shell, fireTransform.position, fireTransform.rotation) as Rigidbody;
+		Rigidbody shellInstance = Instantiate (shell, fireTransform.position, fireTransform.rotation) as Rigidbody;
 
 		// Set the shell's velocity to the launch force in the fire position's forward direction.
-		shellInstance.velocity = currentLaunchForce * fireTransform.forward; ;
+		shellInstance.velocity = currentLaunchForce * fireTransform.forward;
 
 		// Change the clip to the firing clip and play it.
 		shootingAudio.clip = fireClip;

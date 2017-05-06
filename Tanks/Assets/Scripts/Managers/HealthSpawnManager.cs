@@ -21,13 +21,10 @@ public class HealthSpawnManager : MonoBehaviour {
 		{
 			Destroy(item);
 		}
-
-		Debug.Log ("Destroyed unclaimed health");
+			
 	}
 
 	public void Spawn() {
-		Debug.Log ("Spawning more health!");
-
 		//4 spawn points
 		healthSpawn.Add(new Vector3 (23f, 1f, -39f));
 		healthSpawn.Add(new Vector3 (-20f, 1f, -32f));
