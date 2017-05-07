@@ -14,6 +14,7 @@ public class GameManager : MonoBehaviour
     public TankManager[] tanks; 
 	public HealthSpawnManager healthSpawn;
 	public GameObject rocketPrefab;
+	public GameObject explosionPrefab;
 
 
 
@@ -113,8 +114,21 @@ public class GameManager : MonoBehaviour
 		// While there is not one tank left...
 		while (!OneTankLeft())
 		{
-			if(tanks[0].getTankHealth ().collectedPowerup) { tanks [0].activatePowerup ();}
-			if(tanks[1].getTankHealth ().collectedPowerup) { tanks [1].activatePowerup ();}
+			
+			//Tank Collected Missle
+			if(tanks[0].getTankHealth().collectedPowerup) 
+			{
+				GameObject explosion = Instantiate (explosionPrefab, tanks[1].instance.gameObject.transform.position, tanks[1].instance.gameObject.transform.rotation);
+				tanks [0].getTankHealth ().collectedPowerup = false;
+				Destroy (explosion, 3);
+			}
+			if(tanks[1].getTankHealth().collectedPowerup) 
+			{
+				GameObject explosion = Instantiate (explosionPrefab, tanks[0].instance.gameObject.transform.position, tanks[0].instance.gameObject.transform.rotation);
+				tanks[1].getTankHealth ().collectedPowerup = false;
+				Destroy (explosion, 3);
+
+			}
 		
 			yield return null;
 		}

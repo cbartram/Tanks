@@ -26,6 +26,7 @@ public class ShellExplosion : MonoBehaviour
 		// Go through all the colliders...
 		for (int i = 0; i < colliders.Length; i++)
 		{
+			Debug.Log ("Collided with: " + colliders [i].gameObject.name);
 			// ... and find their rigidbody.
 			Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
 
@@ -34,7 +35,7 @@ public class ShellExplosion : MonoBehaviour
 				continue;
 
 			// Add an explosion force.
-			targetRigidbody.AddExplosionForce (explosionForce, transform.position, explosionRadius);
+			targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
 
 			// Find the TankHealth script associated with the rigidbody.
 			TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth> ();

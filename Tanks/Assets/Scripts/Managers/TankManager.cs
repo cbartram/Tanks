@@ -15,7 +15,6 @@ public class TankManager
     private TankMovement movement;       
     private TankShooting shooting;
     private GameObject canvasGameObject;
-	private ShellExplosion explosion;
 	private TankHealth health;
 
 
@@ -23,13 +22,13 @@ public class TankManager
     {
         movement = instance.GetComponent<TankMovement>();
         shooting = instance.GetComponent<TankShooting>();
-		explosion = instance.GetComponent<ShellExplosion>();
 		health = instance.GetComponent<TankHealth> ();
 
         canvasGameObject = instance.GetComponentInChildren<Canvas>().gameObject;
 
         movement.playerNumber = playerNumber;
         shooting.playerNumber = playerNumber;
+
 
         coloredPlayerText = "<color=#" + ColorUtility.ToHtmlStringRGB(playerColor) + ">PLAYER " + playerNumber + "</color>";
 
@@ -40,24 +39,22 @@ public class TankManager
             renderers[i].material.color = playerColor;
         }
     }
-
-
-	public ShellExplosion getShellExplosion()
-	{
-		return explosion;
-	}
+		
 
 	public TankHealth getTankHealth() 
 	{
 		return health;
 	}
 
-	public void activatePowerup() 
+	public TankShooting getTankShooting()
 	{
-		//getShellExplosion ().maxDamage = 200f;
-		Debug.Log ("Max Damage Increased: ");
+		return shooting;
 	}
 
+	public TankMovement getTankMovement()
+	{
+		return movement;
+	}
 
     public void DisableControl()
     {
