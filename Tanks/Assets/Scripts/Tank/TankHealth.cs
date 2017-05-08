@@ -51,7 +51,7 @@ public class TankHealth : MonoBehaviour
 		}
     }
 
-	void OnCollisionEnter(Collision collision)
+	void OnTriggerEnter(Collider collision)
 	{
 
 		if (collision.gameObject.name == "Heart(Clone)") {
@@ -75,7 +75,6 @@ public class TankHealth : MonoBehaviour
 		if (collision.gameObject.name == "RocketPowerup(Clone)") {
 
 			collectedPowerup = true;
-
 			Destroy (collision.gameObject);
 		}
 

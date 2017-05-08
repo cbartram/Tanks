@@ -8,51 +8,53 @@ namespace AssemblyCSharp
 			public LayerMask tankMask;
 			public ParticleSystem explosionParticles;       
 			public AudioSource explosionAudio;    
-			public float maxDamage = 20f;                  
-			public float explosionForce = 3000f;            
+			public float maxDamage = 100f;                  
+			public float explosionForce = 2550f;            
 			public float maxLifeTime = 2f;                  
 			public float explosionRadius = 5f;              
-
-
-			private void Start()
-			{
-				Destroy(gameObject, maxLifeTime);
-			}
 
 
 			// Find all the tanks in an area around the shell and damage them.
 			private void OnTriggerEnter(Collider other)
 			{
-				// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
-				Collider[] colliders = Physics.OverlapSphere (transform.position, explosionRadius, tankMask);
+			
 
-				// Go through all the colliders...
-				for (int i = 0; i < colliders.Length; i++)
-				{
-					Debug.Log ("Collided with: " + colliders [i].gameObject.name);
-					// ... and find their rigidbody.
-					Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
+			// Collect all the colliders in a sphere from the shell's current position to a radius of the explosion radius.
+			Collider[] colliders = Physics.OverlapSphere (transform.position, explosionRadius, tankMask);
 
-					// If they don't have a rigidbody, go on to the next collider.
-					if (!targetRigidbody)
-						continue;
+			// Go through all the colliders...
+			for (int i = 0; i < colliders.Length; i++)
+			{
 
-					// Add an explosion force.
-					targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+				Rigidbody targetRigidbody = colliders[i].GetComponent<Rigidbody> ();
 
-					// Find the TankHealth script associated with the rigidbody.
-					TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth> ();
-
-					// If there is no TankHealth script attached to the gameobject, go on to the next collider.
-					if (!targetHealth)
-						continue;
-
-					// Calculate the amount of damage the target should take based on it's distance from the shell.
-					float damage = CalculateDamage (targetRigidbody.position);
-
-					// Deal this damage to the tank.
-					targetHealth.TakeDamage (damage);
+				if (!targetRigidbody) {
+					//Tank was moving and rocket missed
+					explosionParticles.Play();
 				}
+
+
+				// Add an explosion force.
+				targetRigidbody.AddExplosionForce(explosionForce, transform.position, explosionRadius);
+
+				// Find the TankHealth script associated with the rigidbody.
+				TankHealth targetHealth = targetRigidbody.GetComponent<TankHealth> ();
+
+				// If there is no TankHealth script attached to the gameobject, go on to the next collider.
+				if (!targetHealth)
+					continue;
+
+				// Calculate the amount of damage the target should take based on it's distance from the shell.
+				float damage = CalculateDamage (targetRigidbody.position);
+
+				// Deal this damage to the tank.
+				targetHealth.TakeDamage (damage);
+
+				}
+
+			//Once the particles have finished, destroy the gameobject they are on.
+			Destroy(explosionParticles.gameObject, explosionParticles.duration);
+				
 			}
 
 			// Calculate the amount of damage a target should take based on it's position.
@@ -74,9 +76,7 @@ namespace AssemblyCSharp
 				damage = Mathf.Max (0f, damage);
 
 
-				Debug.Log ("Damage Done: " + damage);
-				Debug.Log ("Damage Done without boost: " + (relativeDistance * 100f)); 
-
+				Debug.Log ("Damage Done By Rocket Explosion: " + damage);
 
 				return damage;
 			}

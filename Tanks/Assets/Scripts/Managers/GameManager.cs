@@ -13,8 +13,8 @@ public class GameManager : MonoBehaviour
     public GameObject tankPrefab;  
     public TankManager[] tanks; 
 	public HealthSpawnManager healthSpawn;
-	public GameObject rocketPrefab;
-	public GameObject explosionPrefab;
+	public GameObject rocketPrefab; //The rocket that drops and does damage
+	public GameObject rocketPowerupPrefab; //The rocket that the player picks up without the Rocketexplosion Script attached
 
 
 
@@ -89,7 +89,10 @@ public class GameManager : MonoBehaviour
 		healthSpawn.Spawn ();
 
 		//TODO spawn new rocket powerup
-		Instantiate(rocketPrefab, new Vector3(0, 0, 0),  tankPrefab.transform.rotation).transform.Rotate(new Vector3(-90f, 0f, 10f));
+		GameObject r = Instantiate(rocketPowerupPrefab, new Vector3(0f, 1.2f, 0f),  tankPrefab.transform.rotation);
+		r.transform.Rotate (new Vector3 (-90f, 0f, 10f));
+		r.GetComponent<Rigidbody> ().useGravity = false;
+
 
 		// Snap the camera's zoom and position to something appropriate for the reset tanks.
 		cameraControl.SetStartPositionAndSize ();
@@ -114,19 +117,28 @@ public class GameManager : MonoBehaviour
 		// While there is not one tank left...
 		while (!OneTankLeft())
 		{
-			
-			//Tank Collected Missle
+
+			//Tank Collected Missle Powerup
 			if(tanks[0].getTankHealth().collectedPowerup) 
 			{
-				GameObject explosion = Instantiate (explosionPrefab, tanks[1].instance.gameObject.transform.position, tanks[1].instance.gameObject.transform.rotation);
-				tanks [0].getTankHealth ().collectedPowerup = false;
-				Destroy (explosion, 3);
+				
+				//Create Missle above enemy
+				Vector3 rocketVector = new Vector3(tanks[1].instance.gameObject.transform.position.x, tanks[1].instance.gameObject.transform.position.y + 13f, tanks[1].instance.gameObject.transform.position.z);
+				GameObject rocket = Instantiate (rocketPrefab, rocketVector, new Quaternion (0f, 0f, 0f, 0f));
+
+				rocket.transform.Rotate (90f, 0f, 0f);
+
+				tanks [0].getTankHealth().collectedPowerup = false;
+				tanks [1].getTankHealth().collectedPowerup = false;
+
 			}
+
+
 			if(tanks[1].getTankHealth().collectedPowerup) 
 			{
-				GameObject explosion = Instantiate (explosionPrefab, tanks[0].instance.gameObject.transform.position, tanks[0].instance.gameObject.transform.rotation);
-				tanks[1].getTankHealth ().collectedPowerup = false;
-				Destroy (explosion, 3);
+//				GameObject explosion = Instantiate (explosionPrefab, tanks[0].instance.gameObject.transform.position, tanks[0].instance.gameObject.transform.rotation);
+//				tanks[1].getTankHealth ().collectedPowerup = false;
+//				Destroy (explosion, 3);
 
 			}
 		
